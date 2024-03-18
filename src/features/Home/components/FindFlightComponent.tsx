@@ -49,11 +49,22 @@ const FindFlightComponent = (props: FindFlightComponentProps) => {
 
 		if (data.typeFlight === 'mot_chieu') delete body.dateReturn;
 
-		const res = await api.searchFlight(body);
-		if (res.data) {
-			dispatch(setFlightData(res.data.data))
-			router.push("/flights")
-		}
+		// const res = await api.searchFlight(body);
+		// if (res.data) {
+		// 	dispatch(setFlightData(res.data.data));
+		// 	router.push('/flights');
+		// }
+
+		const response = await fetch('api/ticket', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({}),
+		});
+
+		console.log('🚀 ~ onSubmit ~ response:', response);
 	};
 
 	useEffect(() => {
