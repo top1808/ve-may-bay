@@ -36,7 +36,7 @@ const MLayout = ({ children }: { children: React.ReactNode }) => {
 					href='/search-booking'
 					className='text-xl font-bold'
 				>
-					Tìm kiếm mã đặt chỗ
+					Xem chi tiết chuyến bay
 				</Link>
 			</Header>
 			<Content>{children}</Content>

@@ -42,7 +42,7 @@ const OneWayFlight = ({ flights, isReturn, isArrival }: { flights: ItemFlight[];
 				</div>
 			) : (
 				<>
-					<Row>
+					<Row className='py-2 mt-4 '>
 						<Col span={4}>
 							<strong className='text-xl'>Departure</strong>
 						</Col>

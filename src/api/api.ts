@@ -7,7 +7,7 @@ export const api = {
 		return axios.get(
 			`https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${body.from}&destinationLocationCode=${body.to}&departureDate=${body.dateDeparture}&adults=${
 				body.numberpeople || 1
-			}&nonStop=false&max=250`,
+			}&nonStop=false&max=20`,
 			{
 				headers: {
 					Authorization: 'Bearer ' + accessToken,
