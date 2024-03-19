@@ -5,6 +5,7 @@ import { objectToQueryString } from '@/utils/functionHelper';
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 type SearchParam = {
 	code: string;
 	name: string;
@@ -25,8 +26,20 @@ const FormGetInfoTicket = () => {
 		});
 		const json = await res.json();
 		if (json.emailCustomer) {
-			dispatch(setOrderChanging(json));
-			setIsOpenModal(true);
+			const dateToCompare = new Date(json.date);
+			const today = new Date();
+			if (dateToCompare <= today) {
+				Swal.fire({
+					title: 'Error!',
+					text: 'Vé của bạn không thể đổi',
+					icon: 'error',
+					confirmButtonText: 'Tắt',
+				});
+				return;
+			} else {
+				dispatch(setOrderChanging(json));
+				setIsOpenModal(true);
+			}
 		}
 	};
 	const handleOk = () => {
