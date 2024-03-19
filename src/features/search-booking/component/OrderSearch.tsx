@@ -2,6 +2,8 @@ import { convertStringToDayTime, customMoney, getAirlineName, getLocationName } 
 import React from 'react';
 
 const OrderSearch = ({ data }: { data: any }) => {
+	console.log(data);
+
 	return (
 		<>
 			{data && typeof data !== 'string' && (
