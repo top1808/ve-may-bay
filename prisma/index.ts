@@ -50,3 +50,8 @@ export const changeTicket = async (data: any) => {
 
 	return ticket;
 };
+
+export const getAllTicket = async () => {
+    const tickets = await prisma.ticket.findMany();
+    return tickets;
+}
