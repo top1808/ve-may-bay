@@ -8,6 +8,7 @@ interface FlightState {
 	dataSearch?: SearchFlightInfo;
 	flightDeparture?: ItemFlight;
 	flightArrival?: ItemFlight;
+	orderChanging?: Order;
 }
 
 const initialState: FlightState = {
@@ -36,9 +37,12 @@ const flightSlice = createSlice({
 			var temp = state.dataPaying;
 			state.dataPaying = [temp![0], action.payload];
 		},
+		setOrderChanging: (state: FlightState, action: PayloadAction<Order | undefined>) => {
+			state.orderChanging = action.payload;
+		},
 	},
 });
 
-export const { setFlightData, setDataPaying, setLoading, setDataPayingFlightArrival, setDataPayingFlightDeparture } = flightSlice.actions;
+export const { setFlightData, setDataPaying, setLoading, setDataPayingFlightArrival, setDataPayingFlightDeparture, setOrderChanging } = flightSlice.actions;
 export const FlightState = (state: RootState) => state.flight;
 export default flightSlice.reducer;

@@ -1,3 +1,4 @@
+'use client';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import React from 'react';
@@ -5,20 +6,58 @@ import ItemFlight from './ItemFlight';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { setDataPaying, setDataPayingFlightArrival, setDataPayingFlightDeparture } from '@/redux/reducers/flightReducer';
+import Swal from 'sweetalert2';
 
-const OneWayFlight = ({ flights, isReturn, isArrival }: { flights: ItemFlight[]; isReturn: boolean; isArrival: boolean }) => {
+const OneWayFlight = ({ flights, isReturn, isArrival, isChange }: { flights: ItemFlight[]; isReturn: boolean; isArrival: boolean; isChange?: boolean }) => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const handleChoice = (item: ItemFlight) => {
-		if (!isReturn) {
-			dispatch(setDataPaying([item]));
-			router.push('/passengers');
+
+	const { orderChanging } = useAppSelector((state) => state.flight);
+
+	const handleChoice = async (item: ItemFlight) => {
+		if (isChange) {
+			const body = {
+				...orderChanging,
+				airlineCode: item.itineraries?.[0]?.segments?.[0]?.aircraft?.code,
+				dateDeparture: item.itineraries?.[0]?.segments?.[0]?.departure?.at,
+				dateArrival: item.itineraries?.[0]?.segments?.[0]?.arrival?.at,
+				from: item.itineraries?.[0]?.segments?.[0]?.departure?.iataCode,
+				to: item.itineraries?.[0]?.segments?.[0]?.arrival?.iataCode,
+				price: item.price?.total,
+				carrierCode: item.itineraries?.[0]?.segments?.[0]?.carrierCode,
+			};
+			const res = await fetch('/api/change-ticket', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(body),
+			});
+
+			if (res.ok) {
+				Swal.fire({
+					title: 'Đổi vé thành công',
+					icon: 'success',
+				}).then((res) => {
+					if (res.isConfirmed) {
+						router.push('/');
+					}
+				});
+			}
+
+			// xu ly doi ve !
 		} else {
-			if (isArrival) {
-				dispatch(setDataPayingFlightArrival(item));
+			if (!isReturn) {
+				dispatch(setDataPaying([item]));
 				router.push('/passengers');
 			} else {
-				dispatch(setDataPayingFlightDeparture(item));
+				if (isArrival) {
+					dispatch(setDataPayingFlightArrival(item));
+					router.push('/passengers');
+				} else {
+					dispatch(setDataPayingFlightDeparture(item));
+				}
 			}
 		}
 	};
@@ -42,7 +81,7 @@ const OneWayFlight = ({ flights, isReturn, isArrival }: { flights: ItemFlight[];
 				</div>
 			) : (
 				<>
-					<Row>
+					<Row className='py-2 mt-4 '>
 						<Col span={4}>
 							<strong className='text-xl'>Departure</strong>
 						</Col>

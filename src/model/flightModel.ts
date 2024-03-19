@@ -5,4 +5,5 @@ interface SearchFlightInfo {
 	dateReturn?: string;
 	numberpeople?: number;
 	typeFlight?: string;
+	airlineCode?: string;
 }

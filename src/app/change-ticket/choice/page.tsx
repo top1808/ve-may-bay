@@ -1,5 +1,6 @@
 import { getAccessToken } from '@/api/api';
-import FlightPage from '@/features/Flights/Index';
+import OneWayFlight from '@/features/Flights/components/OneWayFlight';
+import React from 'react';
 async function getFlight(body: SearchFlightInfo) {
 	const getToken = await getAccessToken();
 
@@ -15,16 +16,19 @@ async function getFlight(body: SearchFlightInfo) {
 	);
 	return res.json();
 }
-export default async function Flight({ params, searchParams }: { params: null; searchParams: SearchFlightInfo }) {
+const ChoiceFlightChange = async ({ params, searchParams }: { params: null; searchParams: SearchFlightInfo }) => {
 	const res = await getFlight(searchParams);
-	const resReturn = searchParams.dateReturn ? await getFlight({ dateDeparture: searchParams.dateReturn, from: searchParams.to, to: searchParams.from }) : null;
-	const flightsReturn = resReturn?.data ? resReturn?.data : [];
-	
+	const dataDisplay = res?.data;
 	return (
-		<FlightPage
-			isReturn={searchParams.typeFlight === 'mot_chieu' ? false : true}
-			flights={res.data as ItemFlight[]}
-			flightsArrival={flightsReturn}
-		/>
+		<div>
+			<OneWayFlight
+				flights={dataDisplay}
+				isArrival={false}
+				isReturn={false}
+				isChange={true}
+			/>
+		</div>
 	);
-}
+};
+
+export default ChoiceFlightChange;

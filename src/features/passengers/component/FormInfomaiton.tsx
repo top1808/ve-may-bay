@@ -1,12 +1,17 @@
 'use client';
+
 import InforTicket from '@/features/Home/components/InforTicket';
 import { useAppSelector } from '@/redux/hooks';
 import { Button, Col, Form, Input, Row } from 'antd';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 export const FormInfomation = () => {
 	const body = useAppSelector((state) => state.flight.dataPaying);
+	const router = useRouter();
 	const [form] = Form.useForm();
+
 	useEffect(() => {
 		form.setFieldsValue({
 			customerName: '',
@@ -35,7 +40,15 @@ export const FormInfomation = () => {
 			body: JSON.stringify(dataPost),
 		});
 		const tickets = await response.json();
-		console.log('🚀 ~ onSubmit ~ tickets:', tickets);
+		Swal.fire({
+			title: 'Đặt vé thành công',
+			text: `Mã code vé của bạn là ${tickets?.ticket[0]?.code} ${tickets?.ticket[1]?.code ? ' và ' + tickets?.ticket[1]?.code : ''}`,
+			icon: 'success',
+		}).then((res) => {
+			if (res.isConfirmed) {
+				router.push("/")
+			}
+		})
 	};
 	return (
 		<div className='py-10'>
