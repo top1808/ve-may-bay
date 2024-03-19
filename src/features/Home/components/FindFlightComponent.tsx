@@ -43,6 +43,7 @@ const FindFlightComponent = (props: FindFlightComponentProps) => {
 			dateReturn: dayjs((data?.date as Date[])?.[1]).format('YYYY-MM-DD'),
 			typeFlight: data.typeFlight,
 		};
+		if (body.typeFlight === 'mot_chieu') delete body.dateReturn
 		dispatch(setDataPaying(undefined));
 		router.push('/flights' + objectToQueryString(body));
 	};

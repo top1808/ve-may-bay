@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setOrderChanging } from '@/redux/reducers/flightReducer';
 import { objectToQueryString } from '@/utils/functionHelper';
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
@@ -13,8 +14,10 @@ type SearchParam = {
 };
 const FormGetInfoTicket = () => {
 	const [isOpenModal, setIsOpenModal] = useState(false);
+	const [validateCode, setValidateCode] = useState('');
 	const dispatch = useAppDispatch();
 	const { orderChanging } = useAppSelector((state) => state.flight);
+
 	const router = useRouter();
 	const onSubmit = async (data: SearchParam) => {
 		const res = await fetch('api/ticket?code=' + data.code, {
@@ -25,7 +28,9 @@ const FormGetInfoTicket = () => {
 			},
 		});
 		const json = await res.json();
-		if (json.emailCustomer) {
+
+
+		if (json?.ticket?.emailCustomer) {
 			const dateToCompare = new Date(json.date);
 			const today = new Date();
 			if (dateToCompare <= today) {
@@ -37,19 +42,37 @@ const FormGetInfoTicket = () => {
 				});
 				return;
 			} else {
-				dispatch(setOrderChanging(json));
+				dispatch(setOrderChanging(json?.ticket));
 				setIsOpenModal(true);
+				const res = await fetch('api/flight', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				});
+				const validateCode = await res.json();
+				setValidateCode(validateCode);
 			}
 		}
 	};
 	const handleOk = () => {
-		// success
-		//fail
-		dispatch(setOrderChanging(undefined));
-		//end
 		setIsOpenModal(false);
-		router.push('/change-ticket/choice?' + objectToQueryString({ from: orderChanging?.from, to: orderChanging?.to, dateDeparture: orderChanging?.date, airlineCode: orderChanging?.airlineCode }));
+		router.push('/change-ticket/choice' + objectToQueryString({ from: orderChanging?.from, to: orderChanging?.to, dateDeparture: dayjs(orderChanging?.dateDeparture).format("YYYY-MM-DD"), airlineCode: orderChanging?.airlineCode }));
 	};
+
+	const onValidate = (data: any) => {
+		if (data.code === validateCode) {
+			handleOk();
+		} else {
+			Swal.fire({
+				title: "Mã xác thực không đúng",
+				icon: "error"
+			})
+		}
+	};
+
 	return (
 		<Row>
 			<Col span={24}>
@@ -99,11 +122,12 @@ const FormGetInfoTicket = () => {
 			<Modal
 				open={isOpenModal}
 				title='Xác thực thông tin khách hàng'
-				okButtonProps={{ disabled: false }}
-				onOk={handleOk}
+				// okButtonProps={{ disabled: false }}
+				// onOk={handleOk}
 				onCancel={() => setIsOpenModal(false)}
+				footer={<></>}
 			>
-				<Form>
+				<Form onFinish={onValidate}>
 					<Form.Item
 						name={'code'}
 						rules={[{ required: true, message: 'Please input your Code!' }]}
@@ -114,6 +138,14 @@ const FormGetInfoTicket = () => {
 							className='p-2 text-sm'
 						/>
 					</Form.Item>
+					<div className='flex justify-center'>
+						<Button
+							type='primary'
+							htmlType='submit'
+						>
+							Xác nhận
+						</Button>
+					</div>
 				</Form>
 			</Modal>
 		</Row>

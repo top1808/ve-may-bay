@@ -9,7 +9,7 @@ async function getFlight(body: SearchFlightInfo) {
 		}&nonStop=false&max=10`,
 		{
 			headers: {
-				Authorization: 'Bearer ' + 'y4s8C55pFxNu8tcbeZSGDMriGjD0',
+				Authorization: 'Bearer ' + getToken?.access_token,
 			},
 		},
 	);
@@ -18,7 +18,8 @@ async function getFlight(body: SearchFlightInfo) {
 export default async function Flight({ params, searchParams }: { params: null; searchParams: SearchFlightInfo }) {
 	const res = await getFlight(searchParams);
 	const resReturn = searchParams.dateReturn ? await getFlight({ dateDeparture: searchParams.dateReturn, from: searchParams.to, to: searchParams.from }) : null;
-	const flightsReturn = resReturn.data ? resReturn.data : [];
+	const flightsReturn = resReturn?.data ? resReturn?.data : [];
+	
 	return (
 		<FlightPage
 			isReturn={searchParams.typeFlight === 'mot_chieu' ? false : true}

@@ -12,7 +12,6 @@ const FormSearchBooking = () => {
 	const [order, setOrder] = useState(null);
 	const rouuter = useRouter();
 	const onSubmit = async (data: SearchParam) => {
-		console.log('🚀 ~ onSubmit ~ data:', data);
 		const res = await fetch('api/ticket?code=' + data.code, {
 			method: 'GET',
 			headers: {
@@ -22,7 +21,6 @@ const FormSearchBooking = () => {
 		});
 		const json = await res.json();
 		setOrder(json.ticket ? json.ticket : 'không tìm thấy');
-		console.log('🚀 ~ onSubmit ~ json:', json.ticket);
 	};
 
 	return (

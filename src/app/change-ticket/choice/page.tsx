@@ -10,7 +10,7 @@ async function getFlight(body: SearchFlightInfo) {
 		}&nonStop=false&max=10`,
 		{
 			headers: {
-				Authorization: 'Bearer ' + 'G4e8Jlzgsvz4PZoZHckSXtzdZVWb',
+				Authorization: 'Bearer ' + getToken?.access_token,
 			},
 		},
 	);
@@ -18,7 +18,7 @@ async function getFlight(body: SearchFlightInfo) {
 }
 const ChoiceFlightChange = async ({ params, searchParams }: { params: null; searchParams: SearchFlightInfo }) => {
 	const res = await getFlight(searchParams);
-	const dataDisplay = res.data.fillter((item: any) => item.itineraries?.[0].segments?.[0]?.carrierCode! === searchParams.airlineCode);
+	const dataDisplay = res?.data;
 	return (
 		<div>
 			<OneWayFlight
