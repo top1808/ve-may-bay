@@ -1,5 +1,27 @@
 import FlightPage from '@/features/Flights/Index';
-
-export default function Flight() {
-	return <FlightPage /> ;
+async function getFlight(body: SearchFlightInfo) {
+	const accessToken = 'xmFHhk2ftQvQvFNMRgv4sG1Zo3iO';
+	const res = await fetch(
+		`https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${body.from}&destinationLocationCode=${body.to}&departureDate=${body.dateDeparture}&adults=${
+			body.numberpeople || 1
+		}&nonStop=false&max=250`,
+		{
+			headers: {
+				Authorization: 'Bearer ' + accessToken,
+			},
+		},
+	);
+	return res.json();
+}
+export default async function Flight({ params, searchParams }: { params: null; searchParams: SearchFlightInfo }) {
+	const res = await getFlight(searchParams);
+	const resReturn = searchParams.dateReturn ? await getFlight({ dateDeparture: searchParams.dateReturn, from: searchParams.to, to: searchParams.from }) : null;
+	const flightsReturn = resReturn.data ? resReturn.data : [];
+	return (
+		<FlightPage
+			isReturn={searchParams.typeFlight === 'mot_chieu' ? false : true}
+			flights={res.data as ItemFlight[]}
+			flightsArrival={flightsReturn}
+		/>
+	);
 }

@@ -1,23 +1,22 @@
-import { NextResponse } from "next/server";
-import { createTicket } from "../../../../prisma";
+import { NextResponse } from 'next/server';
+import { createTicket } from '../../../../prisma';
 
 export const POST = async (req: Request) => {
-  try {
-    const data = await req.text();
-    // const body = JSON.parse(data);
-    const ticket = await createTicket();
+	try {
+		const data = await req.text();
+		const body = JSON.parse(data);
+		console.log(body);
 
-    if (!ticket) {
-      return NextResponse.json(
-        { message: "Lỗi" },
-        { status: 404 }
-      );
-    }
+		// const ticket = await createTicket();
 
-    return NextResponse.json({ ticket }, { status: 200 });
-  } catch (e) {
-    return NextResponse.json({ message: "Có lỗi xảy ra" }, { status: 500 });
-  }
+		// if (!ticket) {
+		// 	return NextResponse.json({ message: 'Lỗi' }, { status: 404 });
+		// }
+
+		// return NextResponse.json({ ticket }, { status: 200 });
+	} catch (e) {
+		return NextResponse.json({ message: 'Có lỗi xảy ra' }, { status: 500 });
+	}
 };
 
 // export const GET = async () => {

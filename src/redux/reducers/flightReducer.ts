@@ -3,11 +3,15 @@ import { RootState } from '../store';
 
 interface FlightState {
 	isLoading: boolean;
-	data?: any[];
+	data?: ItemFlight[];
+	dataPaying?: ItemFlight[];
+	dataSearch?: SearchFlightInfo;
+	flightDeparture?: ItemFlight;
+	flightArrival?: ItemFlight;
 }
 
 const initialState: FlightState = {
-	isLoading: true,
+	isLoading: false,
 	data: [],
 };
 
@@ -17,10 +21,24 @@ const flightSlice = createSlice({
 	reducers: {
 		setFlightData: (state: FlightState, action: PayloadAction<any[]>) => {
 			state.data = action.payload;
+			state.isLoading = false;
+		},
+		setDataPaying: (state: FlightState, action: PayloadAction<ItemFlight[] | undefined>) => {
+			state.dataPaying = action.payload;
+		},
+		setLoading: (state: FlightState, action: PayloadAction<boolean>) => {
+			state.isLoading = action.payload;
+		},
+		setDataPayingFlightDeparture: (state: FlightState, action: PayloadAction<ItemFlight>) => {
+			state.dataPaying = [action.payload];
+		},
+		setDataPayingFlightArrival: (state: FlightState, action: PayloadAction<ItemFlight>) => {
+			var temp = state.dataPaying;
+			state.dataPaying = [temp![0], action.payload];
 		},
 	},
 });
 
-export const { setFlightData } = flightSlice.actions;
+export const { setFlightData, setDataPaying, setLoading, setDataPayingFlightArrival, setDataPayingFlightDeparture } = flightSlice.actions;
 export const FlightState = (state: RootState) => state.flight;
 export default flightSlice.reducer;
