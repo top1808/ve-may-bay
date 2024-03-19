@@ -32,12 +32,20 @@ const MLayout = ({ children }: { children: React.ReactNode }) => {
 						width={200}
 					/>
 				</Link>
-				<Link
-					href='/search-booking'
-					className='text-xl font-bold'
-				>
-					Xem chi tiết chuyến bay
-				</Link>
+				<div className='flex gap-6'>
+					<Link
+						href='/search-booking'
+						className='text-xl font-bold'
+					>
+						Chuyến bay của tôi
+					</Link>
+					<Link
+						href='/change-ticket'
+						className='text-xl font-bold'
+					>
+						Dịch vụ đổi vé bay
+					</Link>
+				</div>
 			</Header>
 			<Content>{children}</Content>
 			{/* <Footer className='bg-green-800 text-white'></Footer> */}

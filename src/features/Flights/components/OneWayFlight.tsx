@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { setDataPaying, setDataPayingFlightArrival, setDataPayingFlightDeparture } from '@/redux/reducers/flightReducer';
 
-const OneWayFlight = ({ flights, isReturn, isArrival }: { flights: ItemFlight[]; isReturn: boolean; isArrival: boolean }) => {
+const OneWayFlight = ({ flights, isReturn, isArrival, isChange }: { flights: ItemFlight[]; isReturn: boolean; isArrival: boolean; isChange?: boolean }) => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const handleChoice = (item: ItemFlight) => {
@@ -20,6 +20,9 @@ const OneWayFlight = ({ flights, isReturn, isArrival }: { flights: ItemFlight[];
 			} else {
 				dispatch(setDataPayingFlightDeparture(item));
 			}
+		}
+		if (isChange) {
+			// xu ly doi ve !
 		}
 	};
 	return (

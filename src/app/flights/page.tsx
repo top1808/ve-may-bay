@@ -2,7 +2,6 @@ import { getAccessToken } from '@/api/api';
 import FlightPage from '@/features/Flights/Index';
 async function getFlight(body: SearchFlightInfo) {
 	const getToken = await getAccessToken();
-	console.log(getToken.access_token);
 
 	const res = await fetch(
 		`https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${body.from}&destinationLocationCode=${body.to}&departureDate=${body.dateDeparture}&adults=${
@@ -10,11 +9,10 @@ async function getFlight(body: SearchFlightInfo) {
 		}&nonStop=false&max=10`,
 		{
 			headers: {
-				Authorization: 'Bearer ' + 'G4e8Jlzgsvz4PZoZHckSXtzdZVWb',
+				Authorization: 'Bearer ' + 'y4s8C55pFxNu8tcbeZSGDMriGjD0',
 			},
 		},
 	);
-
 	return res.json();
 }
 export default async function Flight({ params, searchParams }: { params: null; searchParams: SearchFlightInfo }) {
