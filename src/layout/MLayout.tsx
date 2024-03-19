@@ -1,9 +1,10 @@
 'use client';
-import { Layout } from 'antd';
+import { FloatButton, Layout } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import Logo from '../../public/images/logo_vna.webp';
+import { useAppSelector } from '@/redux/hooks';
 
 const { Header, Footer, Content } = Layout;
 
@@ -31,9 +32,16 @@ const MLayout = ({ children }: { children: React.ReactNode }) => {
 						width={200}
 					/>
 				</Link>
+				<Link
+					href='/search-booking'
+					className='text-xl font-bold'
+				>
+					Tìm kiếm mã đặt chỗ
+				</Link>
 			</Header>
 			<Content>{children}</Content>
-			<Footer className='bg-green-800 text-white'>123</Footer>
+			{/* <Footer className='bg-green-800 text-white'></Footer> */}
+			<FloatButton.BackTop type='primary' />
 		</Layout>
 	);
 };

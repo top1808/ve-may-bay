@@ -17,10 +17,13 @@ model Ticket {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   code String @unique
   airlineCode String
-  date String
+  dateDeparture String
+  dateArrival String
   nameCustomer String
   phoneCustomer String
   emailCustomer String
   from String
   to String
+  price String
+  carrierCode String
 }

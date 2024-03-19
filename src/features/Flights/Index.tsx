@@ -1,14 +1,31 @@
-"use client"
-import { useAppSelector } from '@/redux/hooks';
-import { FlightState } from '@/redux/reducers/flightReducer';
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
+import OneWayFlight from './components/OneWayFlight';
+import ReturnFlights from './components/ReturnFlights';
 
-type FlightPageProps = {};
+type FlightPageProps = {
+	flights: ItemFlight[];
+	isReturn: boolean;
+	flightsArrival?: ItemFlight[];
+};
 
-const FlightPage = (props: FlightPageProps) => {
-	const flight = useAppSelector(FlightState);
-	console.log('🚀 ~ FlightPage ~ flight:', flight);
-	return <div>FlightPage</div>;
+const FlightPage = ({ flights, isReturn, flightsArrival }: FlightPageProps) => {
+	return (
+		<>
+			{isReturn ? (
+				<ReturnFlights
+					flights={flights}
+					flightsReturn={flightsArrival}
+				/>
+			) : (
+				<OneWayFlight
+					isReturn={false}
+					isArrival={false}
+					flights={flights}
+				/>
+			)}
+		</>
+	);
 };
 
 export default FlightPage;
