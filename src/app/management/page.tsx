@@ -1,7 +1,7 @@
 import ManagementComponent from '@/features/management/Index';
 import React from 'react';
 
-const Management = () => {
+export default async function Management (){
 	return (
 		<div>
 			<h1 className='text-xl font-bold p-8'>List orders</h1>
@@ -9,5 +9,3 @@ const Management = () => {
 		</div>
 	);
 };
-
-export default Management;
