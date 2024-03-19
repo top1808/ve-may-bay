@@ -34,8 +34,8 @@ export const POST = async (req: Request) => {
 		<li>Mã chuyến bay: ${item.code}</li>
 		<li>Đi từ: ${getLocationName(item.from)}</li>
 		<li>Nơi đến: ${getLocationName(item.to)}</li>
-		<li>Thời gian đi: ${dayjs(body.dateDeparture).format('DD/MM/YYYY HH:mm')}</li>
-		<li>Thời gian đến: ${dayjs(body.dateArrival).format('DD/MM/YYYY HH:mm')}</li>
+		<li>Thời gian đi: ${dayjs(item.dateDeparture).format('DD/MM/YYYY HH:mm')}</li>
+		<li>Thời gian đến: ${dayjs(item.dateArrival).format('DD/MM/YYYY HH:mm')}</li>
 	  </ul>`,
 		);
 
