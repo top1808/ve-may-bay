@@ -44,11 +44,14 @@ const FormGetInfoTicket = () => {
 	};
 	const handleOk = () => {
 		// success
-		//fail
-		dispatch(setOrderChanging(undefined));
-		//end
-		setIsOpenModal(false);
-		router.push('/change-ticket/choice?' + objectToQueryString({ from: orderChanging?.from, to: orderChanging?.to, dateDeparture: orderChanging?.date, airlineCode: orderChanging?.airlineCode }));
+		if (true) {
+			setIsOpenModal(false);
+			router.push('/change-ticket/choice?' + objectToQueryString({ from: orderChanging?.from, to: orderChanging?.to, dateDeparture: orderChanging?.date, airlineCode: orderChanging?.airlineCode }));
+		} else {
+			//fail
+			dispatch(setOrderChanging(undefined));
+			setIsOpenModal(false);
+		}
 	};
 	return (
 		<Row>
@@ -99,11 +102,10 @@ const FormGetInfoTicket = () => {
 			<Modal
 				open={isOpenModal}
 				title='Xác thực thông tin khách hàng'
-				okButtonProps={{ disabled: false }}
-				onOk={handleOk}
+				okButtonProps={{ disabled: false, htmlType: 'submit' }}
 				onCancel={() => setIsOpenModal(false)}
 			>
-				<Form>
+				<Form onFinish={handleOk}>
 					<Form.Item
 						name={'code'}
 						rules={[{ required: true, message: 'Please input your Code!' }]}
