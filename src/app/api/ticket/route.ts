@@ -5,6 +5,7 @@ export const POST = async (req: Request) => {
 	try {
 		const data = await req.text();
 		const body = JSON.parse(data);
+		console.log(body);
 
 		const ticket = await createTicket(body);
 
@@ -14,13 +15,13 @@ export const POST = async (req: Request) => {
 
 		return NextResponse.json({ ticket }, { status: 200 });
 	} catch (e) {
-		return NextResponse.json({ message: 'Có lỗi xảy ra' }, { status: 500 });
+		return NextResponse.json({ message: e }, { status: 500 });
 	}
 };
 
 export const GET = async (request: NextRequest) => {
 	try {
-		const code = request.nextUrl.searchParams.get("code")
+		const code = request.nextUrl.searchParams.get('code');
 		const ticket = await getTicket(code as string);
 		return NextResponse.json({ ticket }, { status: 200 });
 	} catch (e) {

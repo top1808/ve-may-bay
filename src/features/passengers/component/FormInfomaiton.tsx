@@ -1,4 +1,5 @@
 'use client';
+
 import InforTicket from '@/features/Home/components/InforTicket';
 import { useAppSelector } from '@/redux/hooks';
 import { Button, Col, Form, Input, Row } from 'antd';
@@ -7,6 +8,7 @@ import { useEffect } from 'react';
 export const FormInfomation = () => {
 	const body = useAppSelector((state) => state.flight.dataPaying);
 	const [form] = Form.useForm();
+
 	useEffect(() => {
 		form.setFieldsValue({
 			customerName: '',

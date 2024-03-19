@@ -1,6 +1,8 @@
+import { getAccessToken } from '@/api/api';
 import FlightPage from '@/features/Flights/Index';
 async function getFlight(body: SearchFlightInfo) {
-	const accessToken = 'xmFHhk2ftQvQvFNMRgv4sG1Zo3iO';
+	const getToken = await getAccessToken();
+	const accessToken = getToken.access_token;
 	const res = await fetch(
 		`https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${body.from}&destinationLocationCode=${body.to}&departureDate=${body.dateDeparture}&adults=${
 			body.numberpeople || 1
