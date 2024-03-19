@@ -1,8 +1,5 @@
 'use client';
-import { api } from '@/api/api';
 import { airports } from '@/constant/locationCode';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setDataSearch, setFlightData, setLoading } from '@/redux/reducers/flightReducer';
 import { objectToQueryString } from '@/utils/functionHelper';
 import { Button, Col, DatePicker, Form, Radio, Row, Select, Spin } from 'antd';
 import dayjs from 'dayjs';

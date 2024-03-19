@@ -40,7 +40,7 @@ const MLayout = ({ children }: { children: React.ReactNode }) => {
 				</Link>
 			</Header>
 			<Content>{children}</Content>
-			<Footer className='bg-green-800 text-white'>123</Footer>
+			{/* <Footer className='bg-green-800 text-white'></Footer> */}
 			<FloatButton.BackTop type='primary' />
 		</Layout>
 	);

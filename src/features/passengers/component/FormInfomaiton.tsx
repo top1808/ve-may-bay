@@ -15,17 +15,27 @@ export const FormInfomation = () => {
 		});
 	}, [form]);
 	const onSubmit = async (data: Passenger) => {
+		const dataPost = body?.map((item) => ({
+			...data,
+			airlineCode: item.itineraries?.[0]?.segments?.[0]?.aircraft?.code,
+			dateDeparture: item.itineraries?.[0]?.segments?.[0]?.departure?.at,
+			dateArrival: item.itineraries?.[0]?.segments?.[0]?.arrival?.at,
+			from: item.itineraries?.[0]?.segments?.[0]?.departure?.iataCode,
+			to: item.itineraries?.[0]?.segments?.[0]?.arrival?.iataCode,
+			price: item.price?.total,
+			carrierCode: item.itineraries?.[0]?.segments?.[0]?.carrierCode,
+		}));
+
 		const response = await fetch('api/ticket', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ ...data, ...body }),
-		})
-			.then((response) => {})
-			.catch((error) => {});
-		console.log('🚀 ~ onSubmit ~ response:', response);
+			body: JSON.stringify(dataPost),
+		});
+		const tickets = await response.json();
+		console.log('🚀 ~ onSubmit ~ tickets:', tickets);
 	};
 	return (
 		<div className='py-10'>
@@ -59,15 +69,12 @@ export const FormInfomation = () => {
 									className='p-2'
 								/>
 							</Form.Item>
-							<Form.Item<Passenger> name='emailCustomer'>
+							<Form.Item<Passenger>
+								name='emailCustomer'
+								rules={[{ required: true, message: 'Please input your email!' }]}
+							>
 								<Input
 									placeholder='Email'
-									className='p-2'
-								/>
-							</Form.Item>
-							<Form.Item<Passenger> name='address'>
-								<Input
-									placeholder='Address'
 									className='p-2'
 								/>
 							</Form.Item>
