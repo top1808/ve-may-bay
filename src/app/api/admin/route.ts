@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { getAllTicket } from '../../../../prisma';
 
 export const GET = async () => {
-	console.log(123)
 	try {
 		const tickets = await getAllTicket();
 		return NextResponse.json(tickets, { status: 200 });

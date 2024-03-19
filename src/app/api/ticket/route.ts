@@ -10,6 +10,7 @@ export const POST = async (req: Request) => {
 		const body = JSON.parse(data);
 
 		const ticket = await createTicket(body);
+
 		if (!ticket) {
 			return NextResponse.json({ message: 'Lỗi' }, { status: 404 });
 		}
@@ -24,29 +25,31 @@ export const POST = async (req: Request) => {
 			},
 		});
 
-		ticket.forEach(async (item) => {
-			const mainOptions = {
-				from: 'Vé máy bay',
-				to: item?.emailCustomer,
-				subject: 'Khách hàng đã mua vé máy bay',
-				text: 'Cảm ơn bạn đã mua vé máy bay của chúng tôi.',
-				html: `
-			  <p>Thông tin:</p>
-			  <ul>
-				<li>Tên khách hàng: ${item?.nameCustomer}</li>
-				<li>Số điện thoại: ${item.phoneCustomer}</li>
-				<li>Email: ${item.emailCustomer}</li>
-				<li>Mã chuyến bay: ${item.code}</li>
-				<li>Đi từ: ${getLocationName(item.from)}</li>
-				<li>Nơi đến: ${getLocationName(item.to)}</li>
-				<li>Thời gian đi: ${dayjs(body.dateDeparture).format("DD/MM/YYYY HH:mm")}</li>
-				<li>Thời gian đến: ${dayjs(body.dateArrival).format("DD/MM/YYYY HH:mm")}</li>
-			  </ul>
-			`,
-			};
+		const html = ticket?.map(
+			(item) => `
+		<ul>
+		<li>Tên khách hàng: ${item?.nameCustomer}</li>
+		<li>Số điện thoại: ${item.phoneCustomer}</li>
+		<li>Email: ${item.emailCustomer}</li>
+		<li>Mã chuyến bay: ${item.code}</li>
+		<li>Đi từ: ${getLocationName(item.from)}</li>
+		<li>Nơi đến: ${getLocationName(item.to)}</li>
+		<li>Thời gian đi: ${dayjs(body.dateDeparture).format('DD/MM/YYYY HH:mm')}</li>
+		<li>Thời gian đến: ${dayjs(body.dateArrival).format('DD/MM/YYYY HH:mm')}</li>
+	  </ul>`,
+		);
 
-			await transporter.sendMail(mainOptions);
-		});
+		const mainOptions = {
+			from: 'Vé máy bay',
+			to: ticket[0]?.emailCustomer,
+			subject: 'Khách hàng đã mua vé máy bay',
+			html: `
+			<p>Thông tin:</p>
+			${html}
+			  `,
+		};
+
+		await transporter.sendMail(mainOptions);
 
 		return NextResponse.json({ ticket }, { status: 200 });
 	} catch (e) {

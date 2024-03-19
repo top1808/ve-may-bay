@@ -14,7 +14,7 @@ interface DataType {
 	dateDeparture: string;
 }
 const ManagementComponent = ({ data }: { data: any }) => {
-	const [dataSource, setDataSource] = useState();
+	const [dataSource, setDataSource] = useState([]);
 
 	const columns: TableProps<DataType>['columns'] = [
 		{
